@@ -13,8 +13,6 @@ def process(time):
     br.addheaders = [('User-agent', 'Firefox')]
     br.open("http://heasarc.gsfc.nasa.gov/cgi-bin/Tools/xTime/xTime.pl")
 
-
-
     br.select_form("form")
 
     br["time_in_i"] = time # Enter your time in here in the format "2015-06-27 04:23:23.68"
@@ -28,30 +26,27 @@ def process(time):
     table =soup.find("table", border=5)
 
     g = table.findAll('tr')
-
-    row= g[7]
+    row= g[7] #Select the correct row
 
     cols = row.findAll('td')
     value = cols[1].string #This is the MET time
-
-    print value
 
     return value
 
 
 
-with open('times.txt') as f:
+with open('UTC_times.txt') as f:
     content = f.readlines()
 
-new_times=[]
+MET_times=[]
 for i in range(len(content)):
     t = content[i]
     MET =process(t)
 
-    new_times.extend([MET])
+    MET_times.extend([MET])
 
-with open('new_times.txt', 'w') as file:
-    for i in new_times:
+with open('MET_times.txt', 'w') as file:
+    for i in MET_times:
         file.write("%s " % i)
         file.write("\n " )
 
